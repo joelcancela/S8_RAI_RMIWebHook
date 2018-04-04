@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class MainClient {
 
     public static void main(String[] args) {
-
+		//Args: localhost (host server) Jack (client name)
         try {
 	        String host = args[0];
 	        String url = "rmi://"+host+"/cancelarousseau";

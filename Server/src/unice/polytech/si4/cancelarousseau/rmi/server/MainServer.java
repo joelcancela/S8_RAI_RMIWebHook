@@ -15,25 +15,35 @@ public class MainServer {
 			Server server = new Server();
 
 			String url = "rmi://localhost/cancelarousseau";
-			System.out.println("Enregistrement de l'objet avec l'url : " + url);
+			System.out.println("Enregistrement en cours de l'objet serveur avec l'url : " + url + " ...");
 			Naming.rebind(url, server);
 			System.out.println("Serveur lancé");
-			System.out.println("Entrez vos commandes : send <msg>");
+			System.out.printf("#> ");
 			Scanner scan = new Scanner(System.in);
 			String prompt = scan.nextLine();
-			String cmd = prompt.split(" ")[0];
-			String msg = prompt.split(" ")[1];
+			String cmd = "", msg;
 			while (true) {
+				try {
+					cmd = prompt.split(" ")[0];
+					msg = prompt.split(" ")[1];
+				} catch (ArrayIndexOutOfBoundsException e) {
+					msg = "";
+				}
 				switch (cmd) {
 					case "send":
 						server.sendMessageToSubscribers(msg);
-						prompt = scan.nextLine();
-						cmd = prompt.split(" ")[0];
-						msg = prompt.split(" ")[1];
+						break;
+					case "loto":
+						server.sendLoto();
+					case "help":
+						System.out.println("Usage: send <message> | loto | help");
 						break;
 					default:
+						System.out.println("Tapez \"help\" pour afficher les commandes possibles");
 						break;
 				}
+				System.out.printf("#> ");
+				prompt = scan.nextLine();
 			}
 		} catch (RemoteException e) {
 			e.printStackTrace();

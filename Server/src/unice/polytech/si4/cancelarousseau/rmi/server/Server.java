@@ -21,7 +21,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	}
 
 	@Override
-	public boolean subscribe(IClient client) throws RemoteException {
+	public synchronized boolean subscribe(IClient client) throws RemoteException {
 		if (clients.add(client)) {
 			System.out.printf(client.getClientName() + " s'est abonné \n#> ");
 		}
@@ -29,7 +29,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 	}
 
 	@Override
-	public boolean unsubscribe(IClient client) throws RemoteException {
+	public synchronized boolean unsubscribe(IClient client) throws RemoteException {
 		if (clients.remove(client)) {
 			System.out.printf(client.getClientName() + " s'est désinscrit \n#> ");
 		}
@@ -50,17 +50,23 @@ public class Server extends UnicastRemoteObject implements IServer {
 	public void sendLoto() {
 		Random random = new Random();
 		for(int i=0; i<6;i++){
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			int rand = random.nextInt(51);
 			if(i==5){
-				sendMessageToSubscribers("Et le numéro complémentaire le "+rand);
+				setTimeout(() -> sendMessageToSubscribers("Et le numéro complémentaire le "+rand), i*1000);
 			}else{
-				sendMessageToSubscribers("Le "+rand);
+				setTimeout(() -> sendMessageToSubscribers("Le "+rand), i*1000);
 			}
 		}
+	}
+	public static void setTimeout(Runnable runnable, int delay){
+		new Thread(() -> {
+			try {
+				Thread.sleep(delay);
+				runnable.run();
+			}
+			catch (Exception e){
+				System.err.println(e);
+			}
+		}).start();
 	}
 }

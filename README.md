@@ -1,4 +1,4 @@
-# S8_AM_RMIWebHook
+# RMI with web hooks Client & Server
 
 Mini project Java RMI simulating web hooks
 
@@ -20,7 +20,7 @@ Mini project Java RMI simulating web hooks
 
 * Launch the client by launching the ```MainClient``` class with no arguments.
 * You'll be asked to enter the server IP (Only the IP !) in our case, it will be ```localhost```.
-* Then you'll be asked to enter a nickname to be indentified by the server (a string whatever you want).
+* Then you'll be asked to enter a nickname to be identified by the server (a string whatever you want).
 * A prompt will appear where you will be able to type your commands.
 
 #### Available commands for Client
